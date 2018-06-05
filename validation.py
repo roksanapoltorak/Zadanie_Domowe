@@ -1,0 +1,12 @@
+print("Hello. Today we'll verify your PESEL.\n")
+print("Let`s remind what it is. PESEL number has the form of YYMMDDZZZXQ, where YYMMDD is the date of birth \n with century encoded in month field, ZZZX is the personal identification number,\n where X codes sex (even number for females, odd number for males) and Q is a check digit, \n which is used to verify whether a given PESEL is correct or not. \n")
+
+import peseltools
+
+pesel_of_user = input("Please enter it to check if these conditions are fulfilled: ")
+birth_of_user = input("To check if date of your birth is correct enter it in format YYMMDD:")
+sex_of_user = input("Please enter your sex - F for female, M for male: ")
+
+peseltools.validate(pesel_of_user)
+
+peseltools.extract_personal_data(pesel_of_user)
