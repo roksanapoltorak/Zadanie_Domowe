@@ -5,7 +5,7 @@ Module for PESEL validation
 """
 
 
-def validate(pesel):
+def validate(pesel, birth, sex):
     """
     Returns validation of PESEL
 
@@ -20,17 +20,27 @@ def validate(pesel):
             pesel[4]) + 7 * int(pesel[5]) + 3 * int(pesel[6]) + 1 * int(pesel[7]) + 9 * int(pesel[8]) + 7 * int(
             pesel[9])
         months_31 = [1, 3, 5, 7, 8, 10, 12]
-        month_30 = [4, 6, 9, 11]
+        months_30 = [4, 6, 9, 11]
+        female = [0, 2, 4, 6, 8]
+        male = [1, 3, 5, 7, 9]
 
         if len(pesel) == 11 and checking_sum % 10 == int(pesel[10]):
-            if int(pesel[2:4]) <=12 and int(pesel[2:4]) in months_31 and int(pesel[4:6]) <= 31:
-                if birth == int(pesel[0:6]) and sex.lower() == 'f' and int(pesel[9]) in ("02468"):
-                    return True
-                elif birth == int(pesel[0:6]) and sex.lower() == 'm' and pint(pesel[9]) in ("13579"):
-                    return True
-            elif int(pesel[2:4]) <= 12 and int(pesel[2:4]) in month_30 and int(pesel[4:6]) <= 30:
-                return True
-
+            if (sex.lower() == 'f' and int(pesel[9]) in female) or (sex.lower() == 'm' and int(pesel[9]) in male):
+                if 1800 <= int(birth[:4]) <= 1899:
+                    if (int(pesel[2:4])-80) == int(birth[4:6]) and int(birth[4:6]) in months_31 and int(pesel[4:6]) <= 31:
+                        return True
+                    elif (int(pesel[2:4])-80) == int(birth[4:6]) and int(birth[4:6]) in months_30 and int(pesel[4:6]) <= 30:
+                        return True
+                elif 1900 <= int(birth[:4]) <= 1999:
+                    if int(pesel[2:4]) <=12 and int(pesel[2:4]) in months_31 and int(pesel[4:6]) <= 31:
+                        return True
+                    elif int(pesel[2:4]) <= 12 and int(pesel[2:4]) in months_30 and int(pesel[4:6]) <= 30:
+                        return True
+                elif 2000 <= int(birth[:4]) <= 2018:
+                    if (int(pesel[2:4])-20) == int(birth[4:6]) and int(birth[4:6]) in months_31 and int(pesel[4:6]) <= 31:
+                        return True
+                    elif (int(pesel[2:4])-20) == int(birth[4:6]) and int(birth[4:6]) in months_30 and int(pesel[4:6]) <= 30:
+                        return True
         else:
             return False
 
@@ -40,7 +50,7 @@ def validate(pesel):
     except IndexError:
         print("You entered not enough or too many digits...")
 
-def extract_personal_data(pesel):
+def extract_personal_data(pesel, birth, sex):
     """
     Returns dictionary with data about user's date of birth and sex
 
@@ -51,14 +61,16 @@ def extract_personal_data(pesel):
     """
 
     personal_data = {}
+    female = [0, 2, 4, 6, 8]
+    male = [1, 3, 5, 7, 9]
 
-    if validate(pesel):
+    if validate(pesel, birth, sex):
         try:
-            personal_data['birth_date'] = pesel[:6]
+            personal_data['birth_date'] = (birth[6:]+'.' + birth[4:6]+'.'+birth[:4])
 
-            if pesel[9] in ("02468"):
+            if int(pesel[9]) in female:
                 personal_data['sex'] = 'female'
-            elif pesel[9] in ("13579"):
+            elif int(pesel[9]) in male:
                 personal_data['sex'] = 'male'
             else:
                 print("Your birth and/or your sex don't fit with your pesel.")

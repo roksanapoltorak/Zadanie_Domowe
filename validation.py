@@ -4,9 +4,9 @@ print("Let`s remind what it is. PESEL number has the form of YYMMDDZZZXQ, where 
 import peseltools
 
 pesel_of_user = input("Please enter it to check if these conditions are fulfilled: ")
-birth_of_user = input("To check if date of your birth is correct enter it in format YYMMDD:")
+birth_of_user = input("To check if date of your birth is correct enter it in format YYYYMMDD:")
 sex_of_user = input("Please enter your sex - F for female, M for male: ")
 
-peseltools.validate(pesel_of_user)
+peseltools.validate(pesel_of_user, birth_of_user, sex_of_user)
 
-peseltools.extract_personal_data(pesel_of_user)
+peseltools.extract_personal_data(pesel_of_user, birth_of_user, sex_of_user)
