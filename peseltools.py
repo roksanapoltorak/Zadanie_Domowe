@@ -10,7 +10,7 @@ def validate(pesel, birth, sex):
     Returns validation of PESEL
 
     Args:
-        PESEL to validate
+        PESEL, date of birth and sex to validate
     Returns:
         Validation of PESEL
     """
